@@ -978,9 +978,6 @@ function setupIaToolsTab() {
 
 // Dentro da sua função setupIaToolsTab, substitua o bloco do enhanceBtn por este:
 
-
-// Substitua o seu bloco if (enhanceBtn) por esta versão final e correta
-
 // Substitua o seu bloco if (enhanceBtn) por esta versão final e correta
 
 if (enhanceBtn) {
@@ -991,7 +988,6 @@ if (enhanceBtn) {
             return;
         }
 
-        // A principal mudança é que agora precisamos do arquivo de imagem original
         if (!originalImageFile) {
             showToast("Por favor, envie uma foto original primeiro.", true);
             return;
@@ -1004,12 +1000,11 @@ if (enhanceBtn) {
         enhanceBtn.disabled = true;
         enhanceBtn.innerHTML = '<div class="spinner mx-auto" style="width: 24px; height: 24px; border-left-color: white;"></div>';
 
-        // Não usamos mais o prompt de texto, e sim o arquivo da imagem
         const formData = new FormData();
         formData.append('image_file', originalImageFile, originalImageFile.name);
 
         try {
-            // USANDO A URL CORRETA QUE VOCÊ ENCONTROU!
+            // VERIFIQUE SE A SUA LINHA ESTÁ IGUAL A ESTA:
             const response = await fetch('https://api.clipdrop.co/product-photography/v1', {
                 method: 'POST',
                 headers: {
@@ -1024,7 +1019,6 @@ if (enhanceBtn) {
                 previewAfter.src = imageUrl;
                 downloadBtn.href = imageUrl;
                 
-                // Pega o nome do prato para o nome do arquivo, se existir
                 const dishDescription = document.getElementById('dish-description').value || 'foto_profissional';
                 downloadBtn.download = `cardapiogram_${dishDescription.toLowerCase().replace(/\s/g, '_')}.png`;
 
@@ -1044,11 +1038,13 @@ if (enhanceBtn) {
         } finally {
             loadingSpinner.classList.add('hidden');
             enhanceBtn.disabled = false;
-            // Podemos simplificar o nome do botão, já que não usa mais o texto
             enhanceBtn.innerHTML = '<i class="fas fa-magic-wand-sparkles mr-3"></i>Melhorar Foto';
         }
     });
-}                
+}
+
+}
+                
         </script>
     </body>
     </html>
