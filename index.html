@@ -978,6 +978,9 @@ function setupIaToolsTab() {
 
 // Dentro da sua função setupIaToolsTab, substitua o bloco do enhanceBtn por este:
 
+
+// Substitua o seu bloco if (enhanceBtn) por esta versão final e correta
+
 if (enhanceBtn) {
     enhanceBtn.addEventListener('click', async () => {
         const apiKey = localStorage.getItem('clipdropApiKey');
@@ -986,12 +989,9 @@ if (enhanceBtn) {
             return;
         }
 
-        const dishDescription = document.getElementById('dish-description').value;
-        const photoStyle = document.getElementById('photo-style').value;
-        const backgroundStyle = document.getElementById('background-style').value;
-
-        if (!dishDescription) {
-            showToast("Por favor, descreva o prato para gerar a imagem.", true);
+        // A principal mudança é que agora precisamos do arquivo de imagem original
+        if (!originalImageFile) {
+            showToast("Por favor, envie uma foto original primeiro.", true);
             return;
         }
 
@@ -1002,16 +1002,17 @@ if (enhanceBtn) {
         enhanceBtn.disabled = true;
         enhanceBtn.innerHTML = '<div class="spinner mx-auto" style="width: 24px; height: 24px; border-left-color: white;"></div>';
 
-        const prompt = `Fotografia profissional de comida de um(a) ${dishDescription}, ${photoStyle}, com fundo de ${backgroundStyle}, hiper-realista, apetitoso, iluminação de estúdio, cores vibrantes, foco total no prato.`;
+        // Não usamos mais o prompt de texto, e sim o arquivo da imagem
         const formData = new FormData();
-        formData.append('prompt', prompt);
-        formData.append('style', 'photographic');
+        formData.append('image_file', originalImageFile, originalImageFile.name);
 
         try {
-            // ***** A ÚNICA MUDANÇA ESTÁ NESTA LINHA *****
-            const response = await fetch('https://api.clipdrop.co/text-to-image/v1', {
+            // USANDO A URL CORRETA QUE VOCÊ ENCONTROU!
+            const response = await fetch('https://api.clipdrop.co/product-photography/v1', {
                 method: 'POST',
-                headers: { 'x-api-key': apiKey },
+                headers: {
+                    'x-api-key': apiKey,
+                },
                 body: formData,
             });
 
@@ -1020,7 +1021,11 @@ if (enhanceBtn) {
                 const imageUrl = URL.createObjectURL(imageBlob);
                 previewAfter.src = imageUrl;
                 downloadBtn.href = imageUrl;
+                
+                // Pega o nome do prato para o nome do arquivo, se existir
+                const dishDescription = document.getElementById('dish-description').value || 'foto_profissional';
                 downloadBtn.download = `cardapiogram_${dishDescription.toLowerCase().replace(/\s/g, '_')}.png`;
+
                 previewAfter.classList.remove('hidden');
                 downloadBtn.classList.remove('hidden');
             } else {
@@ -1033,12 +1038,12 @@ if (enhanceBtn) {
         } catch (error) {
             showToast(`Erro da API ClipDrop: ${error.message}`, true);
             console.error(error);
-
             placeholderAfterIcon.classList.remove('hidden');
         } finally {
             loadingSpinner.classList.add('hidden');
             enhanceBtn.disabled = false;
-            enhanceBtn.innerHTML = '<i class="fas fa-magic-wand-sparkles mr-3"></i>Gerar Versão Profissional';
+            // Podemos simplificar o nome do botão, já que não usa mais o texto
+            enhanceBtn.innerHTML = '<i class="fas fa-magic-wand-sparkles mr-3"></i>Melhorar Foto';
         }
     });
 }
