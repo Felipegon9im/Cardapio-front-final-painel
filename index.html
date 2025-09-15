@@ -1,192 +1,78 @@
-    <!DOCTYPE html>
-    <html lang="pt-br">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Painel de Gestão - CardápioGram</title>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-        <style>
-            body { font-family: 'Poppins', sans-serif; }
-            .tab-content { display: none; }
-            .tab-content.active { display: block; }
-            .tab-link.active { color: #3b82f6; border-color: #3b82f6; }
-            .switch { position: relative; display: inline-block; width: 60px; height: 34px; }
-            .switch input { opacity: 0; width: 0; height: 0; }
-            .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
-            .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
-            input:checked + .slider { background-color: #2563eb; }
-            input:checked + .slider:before { transform: translateX(26px); }
-            .kanban-column { min-width: 300px; }
-            .toast-container { position: fixed; bottom: 1.25rem; right: 1.25rem; z-index: 9999; display: flex; flex-direction: column; gap: 0.5rem; }
-            .toast { transition: all 0.5s ease; transform: translateX(120%); opacity: 0; }
-            .toast.show { transform: translateX(0); opacity: 1; }
-            .spinner { border: 4px solid rgba(0, 0, 0, 0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: #3b82f6; animation: spin 1s ease infinite; }
-            @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oficina de Fotografia com IA - CardapioGram</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #4f46e5;
+            animation: spin 1s ease infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
 
-            
-        </style>
-    </head>
-    <body class="bg-gray-100">
-
-        <div id="login-screen" class="min-h-screen flex items-center justify-center bg-gray-200 p-4">
-                <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
-                    <div class="w-full max-w-[300px] mx-auto mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 140" role="img" aria-label="CardápioGram logo">
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-10">
+            <div class="w-full max-w-lg mx-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 140" role="img" aria-label="CardápioGram logo">
                 <defs>
                     <linearGradient id="instaGrad" x1="0" x2="1" y1="0" y2="1">
-                        <stop offset="0" stop-color="#f58529"/>
-                        <stop offset="0.3" stop-color="#dd2a7b"/>
-                        <stop offset="0.6" stop-color="#8134af"/>
-                        <stop offset="1" stop-color="#515bd4"/>
+                    <stop offset="0" stop-color="#f58529"/>
+                    <stop offset="0.3" stop-color="#dd2a7b"/>
+                    <stop offset="0.6" stop-color="#8134af"/>
+                    <stop offset="1" stop-color="#515bd4"/>
                     </linearGradient>
                 </defs>
-                <text x="20" y="90" font-family="Poppins, Arial, sans-serif" font-size="64" font-weight="700" fill="#111">
+                
+                <text x="20" y="90"
+                        font-family="Poppins, Inter, Arial, Helvetica, sans-serif"
+                        font-size="64"
+                        font-weight="700"
+                        fill="#111">
                     Cardápio
                 </text>
-                <text x="360" y="90" font-family="Poppins, Arial, sans-serif" font-size="64" font-weight="700" fill="url(#instaGrad)">
+                
+                <!-- Ícone do Robô FELIZ -->
+                <g transform="translate(340, 35) scale(1.2)">
+                    <rect x="0" y="0" width="50" height="50" rx="10" fill="url(#instaGrad)"/>
+                    <circle cx="15" cy="25" r="5" fill="white"/>
+                    <circle cx="35" cy="25" r="5" fill="white"/>
+                    <!-- A boca reta foi substituída por um sorriso -->
+                    <path d="M 15 38 Q 25 45, 35 38" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+                </g>
+
+                <text x="420" y="90"
+                        font-family="Poppins, Inter, Arial, Helvetica, sans-serif"
+                        font-size="64"
+                        font-weight="700"
+                        fill="url(#instaGrad)">
                     Gram
                 </text>
-            </svg>
-        </div>
-                <form id="login-form" class="space-y-4">
-                    <input type="email" id="email" class="w-full p-3 border rounded-lg" placeholder="Email" required>
-                    <input type="password" id="password" class="w-full p-3 border rounded-lg" placeholder="Senha" required>
-                    <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg">Entrar</button>
-                </form>
-                <p id="login-error" class="text-red-500 text-sm mt-2 text-center"></p>
+                </svg>
             </div>
-        </div>
-        
-        <div id="auth-check-screen" class="min-h-screen flex items-center justify-center hidden">
-            <div class="text-center">
-                <div class="spinner mx-auto"></div>
-                <p class="text-gray-600 mt-4">Verificando permissões...</p>
-            </div>
-        </div>
+            <p class="text-gray-600 mt-2">Transforme fotos de celular em imagens de estúdio com o poder da IA.</p>
+        </header>
 
-        <div id="main-panel" class="hidden">
-            <header class="bg-white shadow-md">
-                <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-                    <h1 id="panel-title" class="text-xl md:text-2xl font-bold text-gray-800">Painel de Gestão</h1>
-                    <button id="logout-button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Sair</button>
-                </div>
-            </header>
-            <main class="container mx-auto p-4 md:p-6">
-                <div class="mb-6"><nav class="-mb-px flex space-x-8 border-b"><a href="#" class="tab-link whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm active" data-tab="pedidos">Pedidos</a><a href="#" class="tab-link whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500" data-tab="gestao">Gestão</a><a href="#" class="tab-link whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500" data-tab="relatorio">Relatórios</a><a href="#" class="tab-link whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="ia-tools">
-        <i class="fas fa-magic-wand-sparkles mr-2"></i>Oficina de IA
-    </a></nav></div>
-                <div id="pedidos" class="tab-content active">
-                    <div class="flex space-x-4 overflow-x-auto pb-4">
-                        <div class="kanban-column flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4"><h2 class="text-lg font-semibold mb-4 text-gray-700 p-2 bg-blue-100 rounded-t-md">Novos (<span id="count-aberto">0</span>)</h2><div id="pedidos-aberto" class="space-y-4 bg-gray-50 p-2 rounded-b-md min-h-[300px]"></div></div>
-                        <div class="kanban-column flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4"><h2 class="text-lg font-semibold mb-4 text-gray-700 p-2 bg-yellow-100 rounded-t-md">Em Preparo (<span id="count-em_preparo">0</span>)</h2><div id="pedidos-em_preparo" class="space-y-4 bg-gray-50 p-2 rounded-b-md min-h-[300px]"></div></div>
-                        <div class="kanban-column flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4"><h2 class="text-lg font-semibold mb-4 text-gray-700 p-2 bg-green-100 rounded-t-md">Pronto (<span id="count-pronto">0</span>)</h2><div id="pedidos-pronto" class="space-y-4 bg-gray-50 p-2 rounded-b-md min-h-[300px]"></div></div>
-                        <div class="kanban-column flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4"><h2 class="text-lg font-semibold mb-4 text-gray-700 p-2 bg-gray-200 rounded-t-md">Finalizados Hoje (<span id="count-finalizados">0</span>)</h2><div id="pedidos-finalizados" class="space-y-4 bg-gray-50 p-2 rounded-b-md min-h-[300px]"></div></div>
-                    </div>
-                </div>
-                <div id="gestao" class="tab-content">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <div class="bg-white p-6 rounded-lg shadow-md space-y-8">
-                            <div><h3 class="text-xl font-bold text-gray-800 mb-4">Gerir Categorias</h3><div id="category-list" class="space-y-2 mb-4"></div><form id="add-category-form" class="flex space-x-2"><input type="text" id="newCategoryName" placeholder="Nome da nova categoria" class="w-full p-2 border rounded" required><button type="submit" class="bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600">Adicionar</button></form></div>
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-800 mb-4 border-t pt-8">Gerir Produtos</h3>
-                                <div id="produtos-list" class="space-y-3 mb-6 max-h-[500px] overflow-y-auto pr-2"></div>
-                                <h4 class="font-bold mt-6 border-t pt-4">Adicionar Novo Item</h4>
-                                <form id="add-item-form" class="space-y-4 mt-2"></form>
-                            </div>
-                        </div>
-                        <div class="bg-white p-6 rounded-lg shadow-md">
-                            <h3 class="text-xl font-bold text-gray-800 mb-4">Configurações da Loja</h3>
-                            <form id="config-form" class="space-y-4"></form>
-                        </div>
-                    </div>
-                </div>
-                <div id="relatorio" class="tab-content">
-        <h2 class="text-xl font-semibold mb-4 text-gray-700">Relatório de Vendas</h2>
-        <div class="bg-white p-6 rounded-lg shadow-md">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-b pb-4 mb-4">
-                <div>
-                    <label for="start-date" class="block text-sm font-medium text-gray-700">Data de Início</label>
-                    <input type="date" id="start-date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                </div>
-                <div>
-                    <label for="end-date" class="block text-sm font-medium text-gray-700">Data de Fim</label>
-                    <input type="date" id="end-date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                </div>
-                <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-gray-700">Filtros Rápidos</label>
-                    <div class="mt-1 flex space-x-2">
-                        <button id="filter-today" class="px-3 py-1 text-sm bg-gray-200 rounded-md hover:bg-gray-300">Hoje</button>
-                        <button id="filter-yesterday" class="px-3 py-1 text-sm bg-gray-200 rounded-md hover:bg-gray-300">Ontem</button>
-                        <button id="filter-7-days" class="px-3 py-1 text-sm bg-gray-200 rounded-md hover:bg-gray-300">Últimos 7 dias</button>
-                        <button id="filter-this-month" class="px-3 py-1 text-sm bg-gray-200 rounded-md hover:bg-gray-300">Este Mês</button>
-                    </div>
-                </div>
-            </div>
-            <div class="flex items-center space-x-4">
-                <button id="generate-report-btn" class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
-                    <i class="fas fa-search mr-2"></i>Gerar Relatório
-                </button>
-                <button id="download-excel-btn" class="bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
-                    <i class="fas fa-file-excel mr-2"></i>Baixar em Excel
-                </button>
-            </div>
-            <div id="report-summary" class="mt-6 hidden">
-                <h3 class="text-lg font-semibold text-gray-800 border-t pt-4">Resumo do Período</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-                    <div class="bg-blue-50 p-4 rounded-lg text-center">
-                        <p class="text-sm text-blue-800">Faturamento Total</p>
-                        <p id="summary-total" class="text-2xl font-bold text-blue-900">R$ 0,00</p>
-                    </div>
-                    <div class="bg-green-50 p-4 rounded-lg text-center">
-                        <p class="text-sm text-green-800">Pedidos Concluídos</p>
-                        <p id="summary-completed-orders" class="text-2xl font-bold text-green-900">0</p>
-                    </div>
-                    <div class="bg-red-50 p-4 rounded-lg text-center">
-                        <p class="text-sm text-red-800">Pedidos Cancelados</p>
-                        <p id="summary-canceled-orders" class="text-2xl font-bold text-red-900">0</p>
-                    </div>
-                    <div class="bg-indigo-50 p-4 rounded-lg text-center">
-                        <p class="text-sm text-indigo-800">Ticket Médio</p>
-                        <p id="summary-avg-ticket" class="text-2xl font-bold text-indigo-900">R$ 0,00</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>    
-<div id="ia-tools" class="tab-content">
-    
-    <div id="ia-setup-section" class="bg-white p-6 md:p-8 rounded-lg shadow-lg max-w-2xl mx-auto text-center">
-        <i class="fas fa-key text-4xl text-yellow-500 mb-4"></i>
-        <h2 class="text-2xl font-bold text-gray-800 mb-3">Configuração Necessária</h2>
-        <p class="text-gray-600 mb-6">Para ativar a Oficina de IA, você precisa de uma chave de API (API Key) do ClipDrop. É gratuito para começar.</p>
-        
-        <div class="mb-4">
-            <label for="api-key-input" class="block text-sm font-medium text-gray-700 text-left mb-1">Sua Chave de API do ClipDrop</label>
-            <input type="password" id="api-key-input" placeholder="Cole sua chave de API aqui" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-        </div>
-        
-        <button id="save-api-key-btn" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700">
-            <i class="fas fa-save mr-3"></i>Salvar e Começar a Usar
-        </button>
-
-        <p class="mt-6 text-sm">
-            <a href="https://clipdrop.co/apis" target="_blank" class="text-indigo-600 hover:text-indigo-800 font-semibold">Não tem uma chave? Crie sua conta grátis aqui <i class="fas fa-external-link-alt ml-1"></i></a>
-        </p>
-    </div>
-
-    <div id="ia-main-section" class="hidden">
         <main class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            <!-- Coluna de Controles -->
             <div class="bg-white p-6 md:p-8 rounded-lg shadow-xl space-y-6">
+                <!-- Passo 1: Upload -->
                 <div>
-                    <div class="flex justify-between items-center mb-3">
-                         <h2 class="text-xl font-bold">1. Envie sua Foto Original</h2>
-                         <button id="change-api-key-btn" class="text-xs text-gray-500 hover:text-indigo-600"><i class="fas fa-key mr-1"></i>Trocar Chave</button>
-                    </div>
+                    <h2 class="text-xl font-bold mb-3">1. Envie sua Foto Original</h2>
                     <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-indigo-500 hover:bg-gray-50 transition-colors" id="drop-zone">
                         <input type="file" id="image-upload" class="hidden" accept="image/*">
                         <i class="fas fa-cloud-upload-alt text-4xl text-gray-400"></i>
@@ -194,6 +80,7 @@
                     </div>
                 </div>
                 
+                <!-- Passo 2: Aprimoramento -->
                 <div id="controls-section" class="hidden space-y-4">
                     <h2 class="text-xl font-bold mb-3 border-t pt-6">2. Descreva o Resultado Ideal</h2>
                     <div>
@@ -218,28 +105,31 @@
                             <option>Cor Sólida e Limpa</option>
                         </select>
                     </div>
+                    <!-- Mensagem de Erro -->
+                    <div id="error-message" class="hidden text-center p-3 bg-red-100 text-red-700 rounded-lg text-sm"></div>
                     <button type="button" id="enhance-btn" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         <i class="fas fa-magic-wand-sparkles mr-3"></i>Gerar Versão Profissional
                     </button>
                 </div>
             </div>
 
+            <!-- Coluna de Resultado -->
             <div class="bg-white p-6 md:p-8 rounded-lg shadow-xl">
                 <h2 class="text-xl font-bold mb-3">Resultado</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
                     <div class="text-center">
                         <h3 class="font-semibold mb-2 text-sm text-gray-600">Antes</h3>
-                        <div class="w-full aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
-                            <i id="placeholder-before-icon" class="fas fa-camera text-5xl text-gray-400"></i>
-                            <img id="preview-before" src="" class="hidden w-full h-full object-cover rounded-lg">
+                        <div id="preview-before-container" class="w-full aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-camera text-5xl text-gray-400"></i>
+                        <img id="preview-before" src="" class="hidden w-full h-full object-cover rounded-lg">
                         </div>
                     </div>
                     <div class="text-center">
                         <h3 class="font-semibold mb-2 text-sm text-gray-600">Depois (IA)</h3>
-                        <div class="w-full aspect-square bg-gray-200 rounded-lg flex items-center justify-center relative">
-                            <div id="loading-spinner" class="spinner hidden absolute"></div>
-                            <i id="placeholder-after-icon" class="fas fa-image text-5xl text-gray-400"></i>
-                            <img id="preview-after" src="" class="hidden w-full h-full object-cover rounded-lg">
+                        <div id="preview-after-container" class="w-full aspect-square bg-gray-200 rounded-lg flex items-center justify-center">
+                        <div id="loading-spinner" class="spinner hidden"></div>
+                        <i id="placeholder-icon" class="fas fa-image text-5xl text-gray-400"></i>
+                        <img id="preview-after" src="" class="hidden w-full h-full object-cover rounded-lg">
                         </div>
                     </div>
                 </div>
@@ -250,801 +140,158 @@
             </div>
         </main>
     </div>
-</div>
-        </main>
-    </div>
 
+    <script>
+        // --- PASSO IMPORTANTE PARA USAR FORA DESTE AMBIENTE ---
+        // 1. Obtenha sua chave de API gratuita no Google AI Studio: https://aistudio.google.com/
+        // 2. Cole sua chave de API abaixo, substituindo a frase "SUA_CHAVE_API_VAI_AQUI".
+        const apiKey = "AIzaSyCoJ5P6ZVa9lXg_r-rr3ZX9ot9tLl7_2w0"; // <<<<<<< COLE SUA CHAVE AQUI
 
-            </main>
-        </div>
-        <div id="edit-item-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4"></div>
-        <div id="cancel-order-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center p-4"></div>
-        <div id="toast-container" class="fixed bottom-5 right-5 z-[100] flex flex-col gap-2"></div>
-        <audio id="notification-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-notification-947.mp3" preload="auto"></audio>
-
-        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+        const dropZone = document.getElementById('drop-zone');
+        const imageUpload = document.getElementById('image-upload');
+        const controlsSection = document.getElementById('controls-section');
+        const enhanceBtn = document.getElementById('enhance-btn');
+        const resetBtn = document.getElementById('reset-btn');
         
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const firebaseConfig = {
-                apiKey: "AIzaSyC08kGcRY7rWrDRbbbXZjrI7pffqsFTwDU",
-                authDomain: "cardapioonline-ce986.firebaseapp.com",
-                projectId: "cardapioonline-ce986",
-                storageBucket: "cardapioonline-ce986.firebasestorage.app",
-                messagingSenderId: "851882063397",
-                appId: "1:851882063397:web:d61577093b176ef534b1cc"
-                };
-                firebase.initializeApp(firebaseConfig);
-                const auth = firebase.auth();
-                const db = firebase.firestore();
+        const previewBefore = document.getElementById('preview-before');
+        const previewAfter = document.getElementById('preview-after');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const placeholderIcon = document.getElementById('placeholder-icon');
+        const downloadBtn = document.getElementById('download-btn');
+        const errorMessage = document.getElementById('error-message');
+        
+        let originalImageBase64 = null;
 
-                            function showToast(message, isError = false) {
-                    const toastContainer = document.getElementById('toast-container');
-                    const toast = document.createElement('div');
-                    toast.className = `p-4 rounded-lg shadow-lg text-white ${isError ? 'bg-red-500' : 'bg-green-500'} transform translate-x-full opacity-0 transition-all duration-500`;
-                    toast.textContent = message;
-                    if(toastContainer) {
-                        toastContainer.appendChild(toast);
-                        setTimeout(() => {
-                            toast.classList.remove('translate-x-full', 'opacity-0');
-                        }, 100);
-                        setTimeout(() => {
-                            toast.classList.add('translate-x-full', 'opacity-0');
-                            setTimeout(() => {
-                                toast.remove();
-                            }, 500);
-                        }, 4000);
-                    }
-                }
+        dropZone.addEventListener('click', () => imageUpload.click());
+        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-indigo-500', 'bg-gray-50'); });
+        dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('border-indigo-500', 'bg-gray-50'); });
+        dropZone.addEventListener('drop', (e) => { e.preventDefault(); dropZone.classList.remove('border-indigo-500', 'bg-gray-50'); if (e.dataTransfer.files.length) { handleFile(e.dataTransfer.files[0]); } });
+        imageUpload.addEventListener('change', (e) => { if (e.target.files.length) { handleFile(e.target.files[0]); } });
+        resetBtn.addEventListener('click', () => { location.reload(); });
 
-                
-                
-                let activeOrdersUnsubscribe, finishedOrdersUnsubscribe;
-                let configUnsubscribe, produtosUnsubscribe, categoriesUnsubscribe;
-                let storeConfig = {}, categories = [], allProdutosSimples = [], userEmpresaId = null; 
-
-                const loginScreen = document.getElementById('login-screen'), mainPanel = document.getElementById('main-panel'), authCheckScreen = document.getElementById('auth-check-screen'), loginForm = document.getElementById('login-form'), loginError = document.getElementById('login-error'), logoutButton = document.getElementById('logout-button'), panelTitle = document.getElementById('panel-title'), produtosList = document.getElementById('produtos-list'), categoryList = document.getElementById('category-list'), configForm = document.getElementById('config-form'), addItemForm = document.getElementById('add-item-form'), addCategoryForm = document.getElementById('add-category-form'), notificationSound = document.getElementById('notification-sound'), editItemModal = document.getElementById('edit-item-modal'), cancelOrderModal = document.getElementById('cancel-order-modal'), pedidosTab = document.getElementById('pedidos');
-
-                auth.onAuthStateChanged(async user => {
-                    if (user) {
-                        showAuthCheck();
-                        try {
-                            const userDoc = await db.collection('usuarios').doc(user.uid).get();
-                            if (userDoc.exists && userDoc.data().empresa_id) {
-                                userEmpresaId = userDoc.data().empresa_id;
-                                showMainPanel();
-                                loadInitialData(userEmpresaId);
-                            } else { throw new Error('Acesso negado. Usuário não associado a uma empresa.'); }
-                        } catch (error) {
-                            loginError.textContent = error.message || 'Acesso negado. Contate o suporte.';
-                            auth.signOut();
-                        }
-                    } else { showLoginSection(); }
-                });
-
-                loginForm.addEventListener('submit', (e) => { e.preventDefault(); auth.signInWithEmailAndPassword(e.target.email.value, e.target.password.value).catch(() => { loginError.textContent = 'Email ou senha inválidos.'; }); });
-                logoutButton.addEventListener('click', () => auth.signOut());
-                
-                function showAuthCheck() { loginScreen.classList.add('hidden'); mainPanel.classList.add('hidden'); authCheckScreen.classList.remove('hidden'); }
-                function showMainPanel() { loginScreen.classList.add('hidden'); authCheckScreen.classList.add('hidden'); mainPanel.classList.remove('hidden'); }
-                function showLoginSection() {
-                    loginScreen.classList.remove('hidden'); mainPanel.classList.add('hidden'); authCheckScreen.classList.add('hidden');
-                    if (activeOrdersUnsubscribe) activeOrdersUnsubscribe();
-                    if (finishedOrdersUnsubscribe) finishedOrdersUnsubscribe();
-                }
-
-                function loadInitialData(empresaId) {
-                    if (!empresaId) return;
-                    listenToConfig(empresaId);
-                    listenToCategories(empresaId);
-                    listenToProdutos(empresaId);
-                    listenToPedidos(empresaId);
-                    setupReportTab(); // <-- ADICIONE ESTA LINHA
-                    setupIaToolsTab(); // <-- ADICIONE ESTA LINHA
-                    
-                }
-
-                function listenToConfig(empresaId) {
-                    db.collection('empresas').doc(empresaId).onSnapshot(doc => {
-                        storeConfig = doc.exists ? { id: doc.id, ...doc.data() } : {};
-                        panelTitle.textContent = `Painel de Gestão - ${storeConfig.name || 'Sua Loja'}`;
-                        renderConfigForm(storeConfig);
-                    });
-                }
-
-                function listenToCategories(empresaId) {
-                    db.collection('categorias').where('empresa_id', '==', empresaId).orderBy('name').onSnapshot(snapshot => {
-                        categories = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                        renderCategoryList(categories);
-                        renderAddItemForm(categories);
-                    });
-                }
-
-                function listenToProdutos(empresaId) {
-                    db.collection('produtos').where('empresa_id', '==', empresaId).orderBy('createdAt', 'desc').onSnapshot(snapshot => {
-                        const produtos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                        allProdutosSimples = produtos.filter(p => !p.productType || p.productType === 'simples');
-                        renderProdutosList(produtos);
-                        renderAddItemForm(categories);
-                    });
-                }
-
-                function listenToPedidos(empresaId) {
-                    if (activeOrdersUnsubscribe) activeOrdersUnsubscribe();
-                    if (finishedOrdersUnsubscribe) finishedOrdersUnsubscribe();
-                    let allOrders = {};
-                    const processAndRender = () => { renderPedidosPorStatus(Object.values(allOrders)); };
-                    const activeStatuses = ['aberto', 'em_preparo', 'pronto'];
-                    activeOrdersUnsubscribe = db.collection('pedidos').where('empresa_id', '==', empresaId).where('status', 'in', activeStatuses)
-                        .onSnapshot(snapshot => {
-                            snapshot.docChanges().forEach(change => {
-                                if (change.type === "removed") { delete allOrders[change.doc.id]; } 
-                                else { allOrders[change.doc.id] = { id: change.doc.id, ...change.doc.data() }; }
-                            });
-                            const hasNewOrders = snapshot.docChanges().some(change => change.type === 'added' && !change.doc.metadata.hasPendingWrites && change.doc.data().status === 'aberto');
-                            if (hasNewOrders) notificationSound.play().catch(() => {});
-                            processAndRender();
-                    }, error => console.error("Erro ao buscar pedidos ativos:", error));
-                    const hoje = new Date();
-                    const inicioDoDia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate(), 0, 0, 0);
-                    finishedOrdersUnsubscribe = db.collection('pedidos').where('empresa_id', '==', empresaId).where('status', 'in', ['concluido', 'cancelado']).where('timestamp', '>=', inicioDoDia)
-                        .onSnapshot(snapshot => {
-                            snapshot.docChanges().forEach(change => {
-                                allOrders[change.doc.id] = { id: change.doc.id, ...change.doc.data() };
-                            });
-                            processAndRender();
-                    }, error => console.error("Erro ao buscar pedidos finalizados:", error));
-                }
-                
-                function renderPedidosPorStatus(pedidos) {
-                    const containers = { aberto: document.getElementById('pedidos-aberto'), em_preparo: document.getElementById('pedidos-em_preparo'), pronto: document.getElementById('pedidos-pronto'), finalizados: document.getElementById('pedidos-finalizados') };
-                    Object.values(containers).forEach(c => { if(c) c.innerHTML = ''; });
-                    const counts = { aberto: 0, em_preparo: 0, pronto: 0, finalizados: 0 };
-                    pedidos.sort((a, b) => (a.timestamp?.seconds || 0) - (b.timestamp?.seconds || 0));
-                    pedidos.forEach(pedido => {
-                        const status = pedido.status;
-                        let container;
-                        if (status === 'concluido' || status === 'cancelado') { container = containers.finalizados; counts.finalizados++; } 
-                        else if (containers[status]) { container = containers[status]; counts[status]++; }
-                        if (container) container.appendChild(renderPedidoCard(pedido));
-                    });
-                    Object.keys(counts).forEach(status => { const countEl = document.getElementById(`count-${status}`); if(countEl) countEl.textContent = counts[status]; });
-                }
-
-                function renderPedidoCard(pedido) {
-                    const el = document.createElement('div');
-                    el.id = `pedido-${pedido.id}`;
-                    el.className = 'bg-white p-3 rounded-lg shadow-md border-l-4';
-                    let scheduledHtml = '';
-                    if (pedido.scheduledFor && pedido.scheduledFor.seconds) {
-                        const scheduledDate = new Date(pedido.scheduledFor.seconds * 1000);
-                        const formattedDate = `${String(scheduledDate.getDate()).padStart(2, '0')}/${String(scheduledDate.getMonth() + 1).padStart(2, '0')}`;
-                        const formattedTime = `${String(scheduledDate.getHours()).padStart(2, '0')}:${String(scheduledDate.getMinutes()).padStart(2, '0')}`;
-                        scheduledHtml = `<div class="mt-2 p-2 bg-orange-50 text-orange-700 rounded-lg text-sm font-semibold flex items-center"><i class="fas fa-calendar-alt mr-2"></i><span>Agendado para: ${formattedDate} às ${formattedTime}</span></div>`;
-                    }
-                    const itemsHtml = (pedido.items || []).map(item => `<li>${item.quantity}x ${item.name}</li>`).join('');
-                    let detailsHtml = '';
-                    if (pedido.orderType === 'Local') detailsHtml = `<div><h4 class="font-semibold">Local:</h4><p class="text-gray-700">${pedido.clientName}</p></div>`;
-                    else if (pedido.orderType === 'Entrega') detailsHtml = `<div><h4 class="font-semibold">Endereço:</h4><p class="text-gray-700">${pedido.clientAddress}</p></div>`;
-                    else detailsHtml = `<div><h4 class="font-semibold">Retirada por:</h4><p class="text-gray-700">${pedido.clientName}</p></div>`;
-                    const proofHtml = pedido.paymentProofUrl ? `<a href="${pedido.paymentProofUrl}" target="_blank" class="text-blue-500 underline hover:text-blue-700">Ver Comp.</a>` : '';
-                    const changeHtml = pedido.changeFor ? `<span class="font-semibold">Troco p/:</span> R$ ${parseFloat(pedido.changeFor).toFixed(2)}` : '';
-                    const notesHtml = pedido.notes ? `<div class="mt-2"><h4 class="font-semibold">Obs:</h4><p class="text-sm text-gray-600 italic">"${pedido.notes}"</p></div>` : '';
-                    let borderColor = 'border-gray-400', actionsHtml = '';
-                    switch (pedido.status) {
-                        case 'aberto': borderColor = 'border-blue-500'; actionsHtml = `<button data-id="${pedido.id}" data-status="em_preparo" class="update-status-btn flex-1 bg-yellow-500 text-white font-bold py-1 px-2 text-xs rounded hover:bg-yellow-600">Preparo</button>`; break;
-                        case 'em_preparo': borderColor = 'border-yellow-500'; actionsHtml = `<button data-id="${pedido.id}" data-status="pronto" class="update-status-btn flex-1 bg-green-500 text-white font-bold py-1 px-2 text-xs rounded hover:bg-green-600">Pronto</button>`; break;
-                        case 'pronto': borderColor = 'border-green-500'; actionsHtml = `<button data-id="${pedido.id}" data-status="concluido" class="update-status-btn flex-1 bg-blue-500 text-white font-bold py-1 px-2 text-xs rounded hover:bg-blue-600">Finalizar</button>`; break;
-                        case 'concluido': borderColor = 'border-gray-300'; actionsHtml = `<p class="text-xs text-green-600 font-semibold">Concluído</p>`; break;
-                        case 'cancelado': borderColor = 'border-red-500'; actionsHtml = `<p class="text-xs text-red-600 font-semibold">Cancelado</p>`; break;
-                    }
-                    if (pedido.status !== 'concluido' && pedido.status !== 'cancelado') {
-                        actionsHtml += `<button data-id="${pedido.id}" class="cancel-order-btn flex-1 bg-red-500 text-white font-bold py-1 px-2 text-xs rounded hover:bg-red-600 ml-2">Cancelar</button>`;
-                    }
-                    el.classList.add(borderColor);
-                    el.innerHTML = `<div class="flex justify-between items-start"><div><p class="font-bold">#${pedido.orderNumber || pedido.id.substring(0,6)} <span class="text-sm font-normal">(${pedido.orderType})</span></p></div><span class="font-bold">R$ ${pedido.total.toFixed(2)}</span></div>${scheduledHtml}<p class="text-sm text-gray-500 mb-2">Cliente: ${pedido.clientName} (${pedido.clientPhone || 'sem telefone'})</p><div class="mt-2 text-sm">${detailsHtml}</div><div class="mt-2 text-sm"><h4 class="font-semibold">Itens:</h4><ul class="list-disc list-inside text-gray-700">${itemsHtml}</ul></div>${notesHtml}${pedido.cancellationReason ? `<div class="mt-2 p-2 bg-red-50 rounded-md"><h4 class="font-semibold text-red-700">Cancelado:</h4><p class="text-sm text-red-600">${pedido.cancellationReason} ${pedido.wasPaid ? '(Cliente pagou!)' : ''}</p></div>` : ''}<div class="mt-2 pt-2 border-t flex justify-between items-center text-xs"><div><span class="font-semibold">${pedido.paymentMethod}</span> ${proofHtml} ${changeHtml}</div></div><div class="mt-4 pt-2 border-t flex justify-around items-center">${actionsHtml}</div>`;
-                    return el;
-                }
-
-    function renderConfigForm(config) {
-                    config.horarios = config.horarios || {};
-                    const diasDaSemana = ['segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado', 'domingo'];
-                    const horariosHtml = diasDaSemana.map(dia => {
-                        const diaCapitalizado = dia.charAt(0).toUpperCase() + dia.slice(1);
-                        const horario = config.horarios[dia] || { aberto: true, inicio: '08:00', fim: '22:00' };
-                        return `<div class="grid grid-cols-4 gap-2 items-center text-sm"><label class="font-medium col-span-1">${diaCapitalizado}</label><input type="time" id="horario-${dia}-inicio" class="p-1 border rounded" value="${horario.inicio}" ${!horario.aberto ? 'disabled' : ''}><input type="time" id="horario-${dia}-fim" class="p-1 border rounded" value="${horario.fim}" ${!horario.aberto ? 'disabled' : ''}><div class="flex items-center justify-end"><label class="switch"><input type="checkbox" id="horario-${dia}-aberto" ${horario.aberto ? 'checked' : ''}><span class="slider"></span></label></div></div>`;
-                    }).join('');
-                    const agendamento = config.agendamento || {};
-                    configForm.innerHTML = `
-                        <input type="text" id="configName" placeholder="Nome da Loja" class="w-full p-2 border rounded" value="${config.name || ''}">
-                        <textarea id="configBio" placeholder="Bio da Loja" class="w-full p-2 border rounded" maxlength="150">${config.bio || ''}</textarea>
-                        
-                        <div class="pt-4 border-t">
-                            <label for="configAddress" class="block text-sm font-medium text-gray-700">Endereço Completo da Loja (para o mapa)</label>
-                            <input type="text" id="configAddress" placeholder="Rua, Número, Bairro, Cidade, Estado" class="w-full p-2 border rounded mt-1" value="${config.address || ''}">
-                        </div>
-
-                        <h4 class="font-bold mt-4 border-t pt-4">Horário de Funcionamento</h4>
-                        <div class="space-y-2">${horariosHtml}</div>
-                        <div class="border-t pt-4 mt-4">
-                            <h4 class="font-bold">Agendamento de Pedidos</h4>
-                            <div class="flex items-center justify-between mt-2">
-                                <label for="configAgendamentoEnabled" class="text-sm font-medium">Ativar agendamento</label>
-                                <label class="switch"><input type="checkbox" id="configAgendamentoEnabled" ${agendamento.enabled ? 'checked' : ''}><span class="slider"></span></label>
-                            </div>
-                            <div id="agendamento-fields" class="${agendamento.enabled ? '' : 'hidden'} space-y-2 mt-2 border-l-2 border-gray-200 pl-4">
-                                <div><label class="text-xs font-medium">Antecedência mínima (minutos)</label><input type="number" id="configAgendamentoAntecedencia" class="w-full p-2 border rounded" value="${agendamento.antecedenciaMinutos || '30'}"></div>
-                                <div><label class="text-xs font-medium">Agendar para até X dias no futuro</label><input type="number" id="configAgendamentoDias" class="w-full p-2 border rounded" value="${agendamento.diasFuturos || '2'}"></div>
-                                <div><label class="text-xs font-medium">Intervalo entre horários (minutos)</label><input type="number" id="configAgendamentoIntervalo" class="w-full p-2 border rounded" value="${agendamento.intervaloMinutos || '15'}"></div>
-                            </div>
-                        </div>
-                        <h4 class="font-bold mt-4 border-t pt-4">Opções de Pedido</h4><div class="space-y-2"><div class="flex items-center justify-between"><label class="text-sm font-medium">Permitir pedidos para Entrega</label><label class="switch"><input type="checkbox" id="configPermitirDelivery" ${config.permitirDelivery !== false ? 'checked' : ''}><span class="slider"></span></label></div><div class="flex items-center justify-between"><label class="text-sm font-medium">Permitir pedidos para Consumo no Local</label><label class="switch"><input type="checkbox" id="configPermitirLocal" ${config.permitirLocal ? 'checked' : ''}><span class="slider"></span></label></div></div><h4 class="font-bold mt-4 border-t pt-4">Formas de Pagamento</h4><div class="space-y-2"><div class="flex items-center justify-between"><label class="text-sm font-medium">Aceita Pix</label><label class="switch"><input type="checkbox" id="configAceitaPix" ${config.aceitaPix !== false ? 'checked' : ''}><span class="slider"></span></label></div><div class="flex items-center justify-between"><label class="text-sm font-medium">Aceita Cartão</label><label class="switch"><input type="checkbox" id="configAceitaCartao" ${config.aceitaCartao ? 'checked' : ''}><span class="slider"></span></label></div><div class="flex items-center justify-between"><label class="text-sm font-medium">Aceita Dinheiro</label><label class="switch"><input type="checkbox" id="configAceitaDinheiro" ${config.aceitaDinheiro ? 'checked' : ''}><span class="slider"></span></label></div></div>
-                        <input type="text" id="configPixKey" placeholder="Sua Chave Pix" class="w-full p-2 border rounded" value="${config.pixKey || ''}">
-                        <input type="text" id="configWhatsapp" placeholder="Nº WhatsApp (Ex: 55119...)" class="w-full p-2 border rounded" value="${config.whatsappNumber || ''}"><button type="submit" class="w-full bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 mt-4">Salvar Configurações</button>
-                    `;
-                    document.getElementById('configAgendamentoEnabled').addEventListener('change', (e) => { document.getElementById('agendamento-fields').classList.toggle('hidden', !e.target.checked); });
-                }
-                
-                function renderDeliveryFees(fees) {
-                    const container = document.getElementById('delivery-fees-container');
-                    container.innerHTML = '';
-                    (fees || []).forEach(fee => {
-                        const div = document.createElement('div');
-                        div.className = 'flex items-center justify-between text-sm p-2 bg-gray-50 rounded';
-                        div.innerHTML = `<span>${fee.bairro} - R$ ${fee.valor.toFixed(2)}</span><button type="button" class="text-red-500 remove-fee-btn">&times;</button>`;
-                        container.appendChild(div);
-                    });
-                }
-
-                function getDeliveryFeesFromUI() {
-                    return Array.from(document.querySelectorAll('#delivery-fees-container > div')).map(div => {
-                        const text = div.querySelector('span').textContent;
-                        const parts = text.split(' - R$ ');
-                        return { bairro: parts[0], valor: parseFloat(parts[1]) };
-                    });
-                }
-                
-                function renderAddItemForm(categories = []) {
-                    const categoryOptions = categories.map(cat => `<option value="${cat.id}">${cat.name}</option>`).join('');
-                    const productOptions = allProdutosSimples.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
-                    addItemForm.innerHTML = `<fieldset id="add-item-fieldset"><input type="text" id="newItemName" placeholder="Nome do Item ou Combo" class="w-full p-2 border rounded" required><textarea id="newItemDescription" placeholder="Descrição" class="w-full p-2 border rounded" required></textarea><div class="pt-4 border-t"><label class="block text-sm font-medium text-gray-700">Tipo de Produto</label><div class="flex space-x-4 mt-1"><label><input type="radio" name="productType" value="simples" checked class="product-type-selector"> Simples</label><label><input type="radio" name="productType" value="combo" class="product-type-selector"> Combo</label></div></div><div id="price-section"><input type="number" id="newItemPrice" placeholder="Preço do Item" step="0.01" class="w-full p-2 border rounded" required></div><div id="combo-section" class="hidden space-y-4 p-4 bg-gray-50 rounded-md"><h4 class="font-bold">Itens do Combo</h4><div class="flex space-x-2"><select id="combo-product-select" class="flex-grow p-2 border rounded">${productOptions.length > 0 ? productOptions : '<option disabled>Crie produtos simples primeiro</option>'}</select><button type="button" id="add-combo-item-btn" class="bg-blue-500 text-white px-3 rounded hover:bg-blue-600">Adicionar</button></div><ul id="combo-items-list" class="space-y-2 text-sm"></ul></div><div><label class="block text-sm font-medium text-gray-700">Categoria</label><select id="newItemCategory" class="w-full p-2 border rounded" required>${categoryOptions.length > 0 ? categoryOptions : '<option disabled>Crie uma categoria</option>'}</select></div><div><label class="block text-sm font-medium text-gray-700">Imagens</label><input type="file" id="newItemImages" class="w-full text-sm" multiple accept="image/*"></div><div class="flex items-center justify-between text-sm font-medium text-gray-700 pt-4 border-t"><label for="newItemIsFeatured">⭐ Marcar como Destaque</label><input type="checkbox" id="newItemIsFeatured" class="h-5 w-5 rounded border-gray-300"></div><div class="flex items-center justify-between text-sm font-medium text-gray-700"><label for="newItemIsHidden">🙈 Ocultar do Cardápio</label><input type="checkbox" id="newItemIsHidden" class="h-5 w-5 rounded border-gray-300"></div><div id="option-groups-container" class="space-y-4 border-t pt-4"><h4 class="font-bold">Variações (Opcional)</h4></div><button type="button" id="add-option-group-btn" class="w-full text-sm bg-gray-200 py-2 px-4 rounded">Adicionar Grupo de Opções</button><button type="submit" class="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600">Adicionar Item</button></fieldset>`;
-                    addItemForm.querySelectorAll('.product-type-selector').forEach(radio => {
-                        radio.addEventListener('change', (e) => {
-                            const isCombo = e.target.value === 'combo';
-                            document.getElementById('combo-section').classList.toggle('hidden', !isCombo);
-                            document.getElementById('price-section').querySelector('input').placeholder = isCombo ? 'Preço do Combo' : 'Preço do Item';
-                            document.getElementById('option-groups-container').classList.toggle('hidden', isCombo);
-                            document.getElementById('add-option-group-btn').classList.toggle('hidden', isCombo);
-                        });
-                    });
-                    document.getElementById('add-combo-item-btn').addEventListener('click', () => {
-                        const select = document.getElementById('combo-product-select');
-                        if(!select.value) return;
-                        const productId = select.value, productName = select.options[select.selectedIndex].text, list = document.getElementById('combo-items-list');
-                        if (productId && !list.querySelector(`li[data-id="${productId}"]`)) {
-                            const li = document.createElement('li');
-                            li.dataset.id = productId; li.dataset.name = productName;
-                            li.className = 'flex justify-between items-center bg-white p-2 rounded';
-                            li.innerHTML = `<span>${productName}</span><button type="button" class="text-red-500 remove-combo-item">&times;</button>`;
-                            list.appendChild(li);
-                        }
-                    });
-                    document.getElementById('combo-items-list').addEventListener('click', (e) => { if (e.target.classList.contains('remove-combo-item')) e.target.parentElement.remove(); });
-                    document.getElementById('add-option-group-btn').addEventListener('click', () => addOptionGroup('option-groups-container'));
-                }
-                
-                function renderProdutosList(produtos) {
-                    produtosList.innerHTML = '';
-                    produtos.forEach(produto => {
-                        const el = document.createElement('div');
-                        el.className = `flex items-center justify-between p-2 border-b ${produto.isHidden ? 'opacity-50 bg-gray-100' : ''}`;
-                        let typeBadge = '';
-                        if(produto.productType === 'combo') { typeBadge = '<span class="ml-2 text-xs bg-purple-200 text-purple-800 px-2 py-1 rounded-full">Combo</span>'; }
-                        el.innerHTML = `<div class="flex items-center space-x-3 min-w-0"><img src="${(produto.imageUrls && produto.imageUrls[0]) || 'https://placehold.co/40x40'}" alt="${produto.name}" class="w-10 h-10 rounded object-cover"><div><p class="font-semibold truncate">${produto.name}${typeBadge}</p><div class="flex items-center text-xs text-gray-500">${produto.isFeatured ? '<span class="mr-2 text-yellow-500">⭐ Destaque</span>' : ''}${produto.isHidden ? '<span class="text-red-500">🙈 Oculto</span>' : ''}</div></div></div><div><button class="edit-item-btn text-blue-500 hover:text-blue-700" data-id="${produto.id}"><i class="fas fa-edit"></i></button><button class="delete-item-btn text-red-500 hover:text-red-700 ml-2" data-id="${produto.id}"><i class="fas fa-trash"></i></button></div>`;
-                        produtosList.appendChild(el);
-                    });
-                }
-
-                function renderCategoryList(categories = []) {
-                    categoryList.innerHTML = '';
-                    if (categories.length === 0) { categoryList.innerHTML = `<p class="text-sm text-gray-500">Nenhuma categoria encontrada.</p>`; return; }
-                    categories.forEach(cat => {
-                        const el = document.createElement('div');
-                        el.className = 'flex items-center justify-between p-2 bg-gray-50 rounded-md';
-                        el.innerHTML = `<span>${cat.name}</span><button class="delete-category-btn text-red-500 hover:text-red-700 text-sm" data-id="${cat.id}"><i class="fas fa-trash"></i></button>`;
-                        categoryList.appendChild(el);
-                    });
-                }
-
-                function renderEditModal(id, item, categories = []) {
-                    const categoryOptions = categories.map(cat => `<option value="${cat.id}" ${item.categoryId === cat.id ? 'selected' : ''}>${cat.name}</option>`).join('');
-                    const productOptions = allProdutosSimples.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
-                    editItemModal.innerHTML = `<div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto"><h3 class="text-xl font-bold text-gray-800 mb-4">Editar Item</h3><form id="edit-item-form" class="space-y-4"><input type="hidden" id="editItemId" value="${id}"><input type="text" id="editItemName" class="w-full p-2 border rounded" required value="${item.name || ''}"><textarea id="editItemDescription" class="w-full p-2 border rounded" required>${item.description || ''}</textarea><div class="pt-4 border-t"><label class="block text-sm font-medium">Tipo de Produto</label><div class="flex space-x-4 mt-1"><label><input type="radio" name="editProductType" value="simples" ${(!item.productType || item.productType === 'simples') ? 'checked' : ''} class="edit-product-type-selector"> Simples</label><label><input type="radio" name="editProductType" value="combo" ${item.productType === 'combo' ? 'checked' : ''} class="edit-product-type-selector"> Combo</label></div></div><div id="edit-price-section"><input type="number" id="editItemPrice" step="0.01" class="w-full p-2 border rounded" required value="${item.price || ''}"></div><div id="edit-combo-section" class="hidden space-y-4 p-4 bg-gray-50 rounded-md"><h4 class="font-bold">Itens do Combo</h4><div class="flex space-x-2"><select id="edit-combo-product-select" class="flex-grow p-2 border rounded">${productOptions}</select><button type="button" id="edit-add-combo-item-btn" class="bg-blue-500 text-white px-3 rounded hover:bg-blue-600">Adicionar</button></div><ul id="edit-combo-items-list" class="space-y-2 text-sm"></ul></div><div><label class="block text-sm font-medium">Categoria</label><select id="editItemCategory" class="w-full p-2 border rounded" required>${categoryOptions}</select></div><div class="flex items-center justify-between text-sm font-medium text-gray-700 pt-4 border-t"><label for="editItemIsFeatured">⭐ Marcar como Destaque</label><input type="checkbox" id="editItemIsFeatured" class="h-5 w-5 rounded border-gray-300" ${item.isFeatured ? 'checked' : ''}></div><div class="flex items-center justify-between text-sm font-medium text-gray-700"><label for="editItemIsHidden">🙈 Ocultar do Cardápio</label><input type="checkbox" id="editItemIsHidden" class="h-5 w-5 rounded border-gray-300" ${item.isHidden ? 'checked' : ''}></div><div id="edit-option-groups-container" class="space-y-4 border-t pt-4"><h4 class="font-bold">Variações</h4></div><button type="button" id="edit-add-option-group-btn" class="w-full text-sm bg-gray-200 font-semibold py-2 px-4 rounded">Adicionar Grupo de Opções</button><div><label class="block text-sm font-medium">Imagens Atuais</label><div id="current-images-gallery" class="mt-2 grid grid-cols-4 gap-2"></div></div><div><label class="block text-sm font-medium">Adicionar mais imagens</label><input type="file" id="editItemImages" class="w-full text-sm" multiple></div><div class="flex justify-end space-x-2"><button type="button" id="cancel-edit-btn" class="bg-gray-300 font-bold py-2 px-4 rounded">Cancelar</button><button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded">Salvar</button></div></form></div>`;
-                    const isCombo = item.productType === 'combo';
-                    editItemModal.querySelector('#edit-combo-section').classList.toggle('hidden', !isCombo);
-                    editItemModal.querySelector('#edit-option-groups-container').classList.toggle('hidden', isCombo);
-                    editItemModal.querySelector('#edit-add-option-group-btn').classList.toggle('hidden', isCombo);
-                    editItemModal.querySelector('#edit-price-section input').placeholder = isCombo ? 'Preço do Combo' : 'Preço do Item';
-                    const gallery = editItemModal.querySelector('#current-images-gallery'); gallery.innerHTML = '';
-                    (item.imageUrls || []).forEach(url => { const imgContainer = document.createElement('div'); imgContainer.className = 'relative group'; imgContainer.innerHTML = `<img src="${url}" class="w-full h-20 object-cover rounded"><button type="button" class="remove-image-btn absolute top-0 right-0 bg-red-600 text-white rounded-full h-6 w-6 opacity-0 group-hover:opacity-100">&times;</button>`; gallery.appendChild(imgContainer); });
-                    if (item.optionGroups) { item.optionGroups.forEach(group => addOptionGroup('edit-option-groups-container', group)); }
-                    if (item.comboItems) {
-                        const list = editItemModal.querySelector('#edit-combo-items-list');
-                        list.innerHTML = '';
-                        item.comboItems.forEach(ci => { const li = document.createElement('li'); li.dataset.id = ci.id; li.dataset.name = ci.name; li.className = 'flex justify-between items-center bg-white p-2 rounded'; li.innerHTML = `<span>${ci.name}</span><button type="button" class="text-red-500 remove-combo-item">&times;</button>`; list.appendChild(li); });
-                    }
-                    editItemModal.classList.remove('hidden');
-                }
-                
-                let groupCounter = 0;
-                function addOptionGroup(containerId, groupData = {}) {
-                    const container = document.getElementById(containerId); const groupId = `group-${groupCounter++}`; const groupEl = document.createElement('div'); groupEl.className = 'p-4 border rounded-md space-y-3 bg-gray-50 relative'; groupEl.innerHTML = `<button type="button" class="absolute top-2 right-2 text-red-500 remove-group-btn text-xl">&times;</button><input type="text" class="w-full p-2 border rounded font-semibold" placeholder="Nome do Grupo (Ex: Tamanho)" value="${groupData.name || ''}" required><div class="flex items-center space-x-4 text-sm"><div><input type="radio" id="${groupId}-single" name="${groupId}-type" value="single" ${groupData.type === 'single' || !groupData.type ? 'checked' : ''}><label for="${groupId}-single">Escolha Única</label></div><div><input type="radio" id="${groupId}-multiple" name="${groupId}-type" value="multiple" ${groupData.type === 'multiple' ? 'checked' : ''}><label for="${groupId}-multiple">Múltipla</label></div></div><div class="options-container space-y-2"></div><button type="button" class="w-full text-xs bg-blue-100 text-blue-800 font-semibold py-1 px-2 rounded add-option-btn">Adicionar Opção</button>`;
-                    container.appendChild(groupEl); if (groupData.options) { groupData.options.forEach(option => addOptionToGroup(groupEl.querySelector('.options-container'), option)); }
-                    groupEl.querySelector('.add-option-btn').addEventListener('click', (e) => { addOptionToGroup(e.target.previousElementSibling); });
-                    groupEl.querySelector('.remove-group-btn').addEventListener('click', () => groupEl.remove());
-                }
-                function addOptionToGroup(container, optionData = {}) {
-                    const optionEl = document.createElement('div'); optionEl.className = 'flex items-center space-x-2'; optionEl.innerHTML = `<input type="text" class="flex-grow p-1 border rounded text-sm option-name" placeholder="Nome (Ex: Bacon)" value="${optionData.name || ''}" required><input type="number" class="w-24 p-1 border rounded text-sm option-price" placeholder="Preço" step="0.01" value="${optionData.price !== undefined ? optionData.price : ''}"><button type="button" class="text-gray-500 remove-option-btn text-xl">&times;</button>`;
-                    container.appendChild(optionEl); optionEl.querySelector('.remove-option-btn').addEventListener('click', () => optionEl.remove());
-                }
-                function getOptionGroupsFromForm(containerId) { const container = document.getElementById(containerId); if (!container) return []; return Array.from(container.querySelectorAll('.p-4.border')).map(groupEl => ({ name: groupEl.querySelector('input[type="text"]').value, type: groupEl.querySelector('input[type="radio"]:checked').value, options: Array.from(groupEl.querySelectorAll('.options-container > div')).map(optEl => ({ name: optEl.querySelector('.option-name').value, price: parseFloat(optEl.querySelector('.option-price').value) || 0 })) })).filter(group => group.name && group.options.length > 0 && group.options.every(opt => opt.name)); }
-                function updateOrderStatus(orderId, newStatus) { db.collection('pedidos').doc(orderId).update({ status: newStatus }).then(() => showToast(`Pedido atualizado.`)).catch(() => showToast('Erro ao atualizar.', true)); }
-                function showCancelModal(orderId) { cancelOrderModal.innerHTML = `<div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md"><h3 class="text-xl font-bold mb-4">Cancelar Pedido #${orderId.substring(0,6)}</h3><form id="cancel-form" class="space-y-4"><div><label for="cancellation-reason" class="block text-sm font-medium">Motivo</label><textarea id="cancellation-reason" rows="3" class="w-full p-2 border rounded mt-1" required></textarea></div><div class="flex items-center"><input type="checkbox" id="was-paid" class="h-4 w-4 rounded"><label for="was-paid" class="ml-2 block text-sm">O cliente já pagou?</label></div><div class="flex justify-end space-x-2"><button type="button" id="cancel-modal-close" class="bg-gray-300 font-bold py-2 px-4 rounded">Voltar</button><button type="submit" class="bg-red-500 text-white font-bold py-2 px-4 rounded">Confirmar</button></div></form></div>`; cancelOrderModal.classList.remove('hidden'); cancelOrderModal.querySelector('#cancel-modal-close').addEventListener('click', () => cancelOrderModal.classList.add('hidden')); cancelOrderModal.querySelector('#cancel-form').addEventListener('submit', (e) => { e.preventDefault(); db.collection('pedidos').doc(orderId).update({ status: 'cancelado', cancellationReason: e.target['cancellation-reason'].value, wasPaid: e.target['was-paid'].checked }).then(() => { showToast('Pedido cancelado.'); cancelOrderModal.classList.add('hidden'); }).catch(() => showToast('Erro ao cancelar.', true)); }); }
-                function checkCloudinaryConfig() { const fieldset = addItemForm.querySelector('fieldset'); if(fieldset) { fieldset.disabled = !storeConfig.cloudinaryCloudName || !storeConfig.cloudinaryUploadPreset; if (fieldset.disabled) { showToast("Configure o Cloudinary para usar imagens.", true); } } }
-                async function uploadFilesToCloudinary(files) { const { cloudinaryCloudName: cloudName, cloudinaryUploadPreset: uploadPreset } = storeConfig; if (!cloudName || !uploadPreset) { showToast("Cloudinary em falta.", true); return []; } const uploadPromises = Array.from(files).map(file => { const formData = new FormData(); formData.append('file', file); formData.append('upload_preset', uploadPreset); return fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, { method: 'POST', body: formData }).then(res => res.ok ? res.json() : Promise.reject('Falha no upload')); }); try { const results = await Promise.all(uploadPromises); return results.map(res => res.secure_url); } catch (error) { showToast("Erro no upload de imagens.", true); return []; } }
-                function showToast(message, isError = false) { const toastContainer = document.getElementById('toast-container'); const toast = document.createElement('div'); toast.className = `toast p-4 rounded-lg shadow-lg text-white ${isError ? 'bg-red-500' : 'bg-green-500'}`; toast.textContent = message; toastContainer.appendChild(toast); setTimeout(() => { toast.classList.add('show'); }, 100); setTimeout(() => { toast.classList.remove('show'); setTimeout(() => { toast.remove(); }, 500); }, 4000); }
-                
-                document.querySelectorAll('.tab-link').forEach(button => { button.addEventListener('click', (e) => { e.preventDefault(); document.querySelectorAll('.tab-link').forEach(link => link.classList.remove('active')); document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active')); e.currentTarget.classList.add('active'); document.getElementById(e.currentTarget.dataset.tab).classList.add('active'); }); });
-                pedidosTab.addEventListener('click', e => { const updateBtn = e.target.closest('.update-status-btn'); const cancelBtn = e.target.closest('.cancel-order-btn'); if (updateBtn) updateOrderStatus(updateBtn.dataset.id, updateBtn.dataset.status); if (cancelBtn) showCancelModal(cancelBtn.dataset.id); });
-
-                configForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const submitButton = e.target.querySelector('button[type="submit"]');
-                    submitButton.disabled = true; submitButton.textContent = 'Salvando...';
-                    try {
-                        const horarios = {};
-                        ['segunda', 'terca', 'quarta', 'quinta', 'sexta', 'sabado', 'domingo'].forEach(dia => { horarios[dia] = { aberto: document.getElementById(`horario-${dia}-aberto`).checked, inicio: document.getElementById(`horario-${dia}-inicio`).value, fim: document.getElementById(`horario-${dia}-fim`).value }; });
-                        const dataToSave = {
-                            name: document.getElementById('configName').value, 
-                            bio: document.getElementById('configBio').value, 
-                            horarios,
-                            address: document.getElementById('configAddress').value, // <-- LÓGICA ADICIONADA
-                            agendamento: {
-                                enabled: document.getElementById('configAgendamentoEnabled').checked,
-                                antecedenciaMinutos: parseInt(document.getElementById('configAgendamentoAntecedencia').value) || 30,
-                                diasFuturos: parseInt(document.getElementById('configAgendamentoDias').value) || 2,
-                                intervaloMinutos: parseInt(document.getElementById('configAgendamentoIntervalo').value) || 15,
-                            },
-                            permitirDelivery: document.getElementById('configPermitirDelivery').checked, 
-                            permitirLocal: document.getElementById('configPermitirLocal').checked, 
-                            aceitaPix: document.getElementById('configAceitaPix').checked, 
-                            aceitaCartao: document.getElementById('configAceitaCartao').checked, 
-                            aceitaDinheiro: document.getElementById('configAceitaDinheiro').checked, 
-                            pixKey: document.getElementById('configPixKey').value, 
-                            whatsappNumber: document.getElementById('configWhatsapp').value,
-                        };
-                        await db.collection('empresas').doc(userEmpresaId).set(dataToSave, { merge: true });
-                        showToast('Configurações salvas com sucesso!');
-                    } catch (error) { console.error("Erro ao salvar config: ", error); showToast('Erro ao salvar configurações.', true);
-                    } finally { submitButton.disabled = false; submitButton.textContent = 'Salvar Configurações'; }
-                });
-                
-                configForm.addEventListener('click', e => {
-                    if (e.target.classList.contains('remove-fee-btn')) { e.target.parentElement.remove(); }
-                });
-                
-                addItemForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const submitButton = e.target.querySelector('button[type="submit"]');
-                    submitButton.disabled = true; submitButton.textContent = 'Adicionando...';
-                    try {
-                        const imageFiles = document.getElementById('newItemImages').files; let uploadedUrls = []; if(imageFiles.length > 0) uploadedUrls = await uploadFilesToCloudinary(imageFiles);
-                        const productType = addItemForm.querySelector('input[name="productType"]:checked').value;
-                        const newItem = { empresa_id: userEmpresaId, name: document.getElementById('newItemName').value, description: document.getElementById('newItemDescription').value, price: parseFloat(document.getElementById('newItemPrice').value), categoryId: document.getElementById('newItemCategory').value, imageUrls: uploadedUrls, createdAt: firebase.firestore.FieldValue.serverTimestamp(), isFeatured: document.getElementById('newItemIsFeatured').checked, isHidden: document.getElementById('newItemIsHidden').checked, productType: productType };
-                        if (productType === 'combo') { newItem.comboItems = Array.from(addItemForm.querySelectorAll('#combo-items-list li')).map(li => ({ id: li.dataset.id, name: li.dataset.name })); } 
-                        else { newItem.optionGroups = getOptionGroupsFromForm('option-groups-container'); }
-                        await db.collection('produtos').add(newItem);
-                        showToast('Item adicionado com sucesso!');
-                        renderAddItemForm(categories);
-                    } catch (error) { console.error("Erro ao adicionar item: ", error); showToast('Erro ao adicionar item.', true);
-                    } finally { submitButton.disabled = false; submitButton.textContent = 'Adicionar Item'; }
-                });
-                
-                editItemModal.addEventListener('submit', async e => {
-                    e.preventDefault();
-                    const form = e.target.closest('form'), submitButton = form.querySelector('button[type="submit"]');
-                    submitButton.disabled = true; submitButton.textContent = 'Salvando...';
-                    try {
-                        const id = form.querySelector('#editItemId').value;
-                        const existingImages = Array.from(form.querySelectorAll('#current-images-gallery img')).map(img => img.src);
-                        const newImageFiles = form.querySelector('#editItemImages').files; let newUploadedUrls = []; if (newImageFiles.length > 0) newUploadedUrls = await uploadFilesToCloudinary(newImageFiles);
-                        const productType = form.querySelector('input[name="editProductType"]:checked').value;
-                        const updatedData = { name: form.querySelector('#editItemName').value, description: form.querySelector('#editItemDescription').value, price: parseFloat(form.querySelector('#editItemPrice').value), categoryId: form.querySelector('#editItemCategory').value, imageUrls: [...existingImages, ...newUploadedUrls], isFeatured: form.querySelector('#editItemIsFeatured').checked, isHidden: form.querySelector('#editItemIsHidden').checked, productType: productType };
-                        if (productType === 'combo') {
-                            updatedData.comboItems = Array.from(form.querySelectorAll('#edit-combo-items-list li')).map(li => ({ id: li.dataset.id, name: li.dataset.name }));
-                            updatedData.optionGroups = firebase.firestore.FieldValue.delete();
-                        } else {
-                            updatedData.optionGroups = getOptionGroupsFromForm('edit-option-groups-container');
-                            updatedData.comboItems = firebase.firestore.FieldValue.delete();
-                        }
-                        await db.collection('produtos').doc(id).update(updatedData);
-                        showToast('Item atualizado!');
-                        editItemModal.classList.add('hidden');
-                    } catch (error) { console.error("Erro ao atualizar item: ", error); showToast('Erro ao salvar.', true);
-                    } finally { submitButton.disabled = false; submitButton.textContent = 'Salvar Alterações'; }
-                });
-
-                addCategoryForm.addEventListener('submit', e => { e.preventDefault(); const name = e.target.newCategoryName.value.trim(); if (name) { db.collection('categorias').add({ name: name, empresa_id: userEmpresaId }).then(() => { showToast('Categoria adicionada!'); e.target.reset(); }).catch(() => showToast('Erro ao adicionar.', true)); } });
-                categoryList.addEventListener('click', e => { const deleteButton = e.target.closest('.delete-category-btn'); if (deleteButton) { const id = deleteButton.dataset.id; if (confirm('Tem a certeza?')) { db.collection('categorias').doc(id).delete().then(() => showToast('Categoria apagada.')).catch(() => showToast('Erro ao apagar.', true)); } } });
-                editItemModal.addEventListener('click', e => {
-                    if (e.target.id === 'cancel-edit-btn' || e.target.closest('#cancel-edit-btn') || e.target === editItemModal) { editItemModal.classList.add('hidden'); }
-                    const removeButton = e.target.closest('.remove-image-btn'); if(removeButton) { removeButton.parentElement.remove(); }
-                    if(e.target.closest('.edit-product-type-selector')) {
-                        const isComboNow = e.target.value === 'combo';
-                        editItemModal.querySelector('#edit-combo-section').classList.toggle('hidden', !isComboNow);
-                        editItemModal.querySelector('#edit-option-groups-container').classList.toggle('hidden', isComboNow);
-                        editItemModal.querySelector('#edit-add-option-group-btn').classList.toggle('hidden', isComboNow);
-                    }
-                    if(e.target.id === 'edit-add-combo-item-btn'){
-                        const select = editItemModal.querySelector('#edit-combo-product-select');
-                        if(!select.value) return;
-                        const productId = select.value, productName = select.options[select.selectedIndex].text, list = editItemModal.querySelector('#edit-combo-items-list');
-                        if (productId && !list.querySelector(`li[data-id="${productId}"]`)) {
-                            const li = document.createElement('li');
-                            li.dataset.id = productId; li.dataset.name = productName;
-                            li.className = 'flex justify-between items-center bg-white p-2 rounded';
-                            li.innerHTML = `<span>${productName}</span><button type="button" class="text-red-500 remove-combo-item">&times;</button>`;
-                            list.appendChild(li);
-                        }
-                    }
-                    if(e.target.classList.contains('remove-combo-item')){ e.target.parentElement.remove(); }
-                });
-                produtosList.addEventListener('click', async e => {
-                    const deleteButton = e.target.closest('.delete-item-btn');
-                    const editButton = e.target.closest('.edit-item-btn');
-                    if (deleteButton) { const id = deleteButton.dataset.id; if (confirm('Tem certeza?')) { try { await db.collection('produtos').doc(id).delete(); showToast('Item apagado.'); } catch (error) { showToast('Erro ao apagar.', true); } } }
-                    if (editButton) { const id = editButton.dataset.id; try { const doc = await db.collection('produtos').doc(id).get(); if (doc.exists) { renderEditModal(id, doc.data(), categories); } else { showToast('Item não encontrado.', true); } } catch (error) { showToast('Erro ao carregar item.', true); } }
-                });
-                
-                let reportData = [];
-    // Função CORRIGIDA. Copie esta função inteira.
-                function setupReportTab() {
-                    const startDateInput = document.getElementById('start-date');
-                    const endDateInput = document.getElementById('end-date');
-                    const getLocalDate = (date = new Date()) => {
-                        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
-                    };
-                    endDateInput.value = getLocalDate();
-                    startDateInput.value = getLocalDate();
-
-                    document.getElementById('filter-today').addEventListener('click', () => {
-                        endDateInput.value = getLocalDate();
-                        startDateInput.value = getLocalDate();
-                    });
-                    document.getElementById('filter-yesterday').addEventListener('click', () => {
-                        const yesterday = new Date();
-                        yesterday.setDate(yesterday.getDate() - 1);
-                        endDateInput.value = getLocalDate(yesterday);
-                        startDateInput.value = getLocalDate(yesterday);
-                    });
-                    document.getElementById('filter-7-days').addEventListener('click', () => {
-                        const today = new Date();
-                        const sevenDaysAgo = new Date();
-                        sevenDaysAgo.setDate(today.getDate() - 6);
-                        endDateInput.value = getLocalDate(today);
-                        startDateInput.value = getLocalDate(sevenDaysAgo);
-                    });
-                    document.getElementById('filter-this-month').addEventListener('click', () => {
-                        const today = new Date();
-                        const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-                        endDateInput.value = getLocalDate(today);
-                        startDateInput.value = getLocalDate(firstDayOfMonth);
-                    });
-
-                    document.getElementById('generate-report-btn').addEventListener('click', async () => {
-                        const startDate = startDateInput.value;
-                        const endDate = endDateInput.value;
-                        if (!startDate || !endDate) {
-                            showToast("Por favor, selecione as datas de início e fim.", true);
-                            return;
-                        }
-                        reportData = await fetchReportData(startDate, endDate);
-                        displayReportSummary(reportData); // Esta chamada agora vai funcionar
-                    });
-
-                    document.getElementById('download-excel-btn').addEventListener('click', () => {
-                        if (reportData.length === 0) {
-                            showToast("Nenhum dado para exportar. Gere um relatório primeiro.", true);
-                            return;
-                        }
-                        exportToExcel(reportData, startDateInput.value, endDateInput.value);
-                    });
-                }
-
-                // A função que estava em falta foi adicionada aqui.
-                function displayReportSummary(data) {
-                    const summaryContainer = document.getElementById('report-summary');
-                    if (data.length === 0) {
-                        summaryContainer.classList.add('hidden');
-                        document.getElementById('download-excel-btn').disabled = true;
-                        showToast("Nenhum pedido encontrado para o período selecionado.");
-                        return;
-                    }
-
-                    const completedOrders = data.filter(p => p.status === 'concluido');
-                    const canceledOrders = data.filter(p => p.status === 'cancelado');
-                    const totalRevenue = completedOrders.reduce((acc, order) => acc + order.total, 0);
-                    const avgTicket = completedOrders.length > 0 ? totalRevenue / completedOrders.length : 0;
-
-                    document.getElementById('summary-total').textContent = `R$ ${totalRevenue.toFixed(2)}`;
-                    document.getElementById('summary-completed-orders').textContent = completedOrders.length;
-                    document.getElementById('summary-canceled-orders').textContent = canceledOrders.length;
-                    document.getElementById('summary-avg-ticket').textContent = `R$ ${avgTicket.toFixed(2)}`;
-                    
-                    summaryContainer.classList.remove('hidden');
-                    document.getElementById('download-excel-btn').disabled = false;
-                }
-
-                async function fetchReportData(startDate, endDate) {
-                    if (!userEmpresaId) return [];
-                    const query = db.collection('pedidos')
-                                    .where('empresa_id', '==', userEmpresaId)
-                                    .where('date', '>=', startDate)
-                                    .where('date', '<=', endDate);
-                    try {
-                        const snapshot = await query.get();
-                        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                    } catch (error) {
-                        console.error("Erro ao buscar relatório:", error);
-                        showToast("Erro ao buscar dados do relatório.", true);
-                        if (error.code === 'failed-precondition') {
-                            showToast("Pode ser necessário criar um índice no Firestore. Verifique a consola do navegador (F12) para o link.", true);
-                        }
-                        return [];
-                    }
-                }
-
-                function exportToExcel(data, startDate, endDate) {
-                    // --- FOLHA 1: RESUMO ---
-                    const completedOrders = data.filter(p => p.status === 'concluido');
-                    const totalRevenue = completedOrders.reduce((acc, order) => acc + order.total, 0);
-                    const summaryData = [
-                        { Metrica: "Período do Relatório", Valor: `${startDate} a ${endDate}` },
-                        { Metrica: "Faturamento Total (Pedidos Concluídos)", Valor: `R$ ${totalRevenue.toFixed(2)}` },
-                        { Metrica: "Total de Pedidos no Período", Valor: data.length },
-                        { Metrica: "Pedidos Concluídos", Valor: completedOrders.length },
-                        { Metrica: "Pedidos Cancelados", Valor: data.filter(p=>p.status === 'cancelado').length },
-                        { Metrica: "Ticket Médio", Valor: `R$ ${(completedOrders.length > 0 ? totalRevenue / completedOrders.length : 0).toFixed(2)}` }
-                    ];
-                    const wsSummary = XLSX.utils.json_to_sheet(summaryData, { skipHeader: true });
-                    wsSummary["!cols"] = [ { wch: 40 }, { wch: 20 } ]; // Define a largura das colunas
-
-                    // --- FOLHA 2: PEDIDOS DETALHADOS ---
-                    const detailedOrdersData = data.map(order => ({
-                        "Nº Pedido": order.orderNumber || order.id.substring(0,6),
-                        "Data": order.date,
-                        "Hora": new Date(order.timestamp?.seconds * 1000).toLocaleTimeString('pt-BR'),
-                        "Status": order.status,
-                        "Cliente": order.clientName,
-                        "Telefone": order.clientPhone,
-                        "Tipo": order.orderType,
-                        "Itens": (order.items || []).map(item => `${item.quantity}x ${item.name}`).join(', '),
-                        "Total": order.total
-                    }));
-                    const wsDetailedOrders = XLSX.utils.json_to_sheet(detailedOrdersData);
-                    wsDetailedOrders["!cols"] = [ {wch: 10}, {wch: 12}, {wch: 10}, {wch: 12}, {wch: 25}, {wch: 15}, {wch: 15}, {wch: 50}, {wch: 10} ];
-
-                    // --- FOLHA 3: ITENS VENDIDOS ---
-                    const itemsSold = {};
-                    completedOrders.forEach(order => {
-                        (order.items || []).forEach(item => {
-                            if (itemsSold[item.name]) {
-                                itemsSold[item.name].quantidade += item.quantity;
-                                itemsSold[item.name].faturamento += item.price * item.quantity;
-                            } else {
-                                itemsSold[item.name] = {
-                                    produto: item.name,
-                                    quantidade: item.quantity,
-                                    faturamento: item.price * item.quantity
-                                };
-                            }
-                        });
-                    });
-                    const itemsSoldData = Object.values(itemsSold).sort((a, b) => b.quantidade - a.quantidade);
-                    const wsItemsSold = XLSX.utils.json_to_sheet(itemsSoldData);
-                    wsItemsSold["!cols"] = [ {wch: 40}, {wch: 15}, {wch: 15} ];
-
-
-                    // --- Cria o ficheiro Excel com as 3 folhas ---
-                    const wb = XLSX.utils.book_new();
-                    XLSX.utils.book_append_sheet(wb, wsSummary, "Resumo Geral");
-                    XLSX.utils.book_append_sheet(wb, wsItemsSold, "Itens Vendidos");
-                    XLSX.utils.book_append_sheet(wb, wsDetailedOrders, "Todos os Pedidos");
-                    
-                    const fileName = `Relatorio_CardapioGram_${startDate}_a_${endDate}.xlsx`;
-                    XLSX.writeFile(wb, fileName);
-                }
-            });
-
- // ##### VERSÃO FINAL - setupIaToolsTab() COMPLETA COM API CLIPDROP #####
-function setupIaToolsTab() {
-    // --- Elementos da Ferramenta ---
-    const dropZone = document.getElementById('drop-zone');
-    const imageUpload = document.getElementById('image-upload');
-    const controlsSection = document.getElementById('controls-section');
-    const enhanceBtn = document.getElementById('enhance-btn');
-    const resetBtn = document.getElementById('reset-btn');
-    const previewBefore = document.getElementById('preview-before');
-    const placeholderBeforeIcon = document.getElementById('placeholder-before-icon');
-    const previewAfter = document.getElementById('preview-after');
-    const loadingSpinner = document.getElementById('loading-spinner');
-    const placeholderAfterIcon = document.getElementById('placeholder-after-icon');
-    const downloadBtn = document.getElementById('download-btn');
-    let originalImageFile = null;
-
-    // --- Elementos da seção de configuração ---
-    const setupSection = document.getElementById('ia-setup-section');
-    const mainSection = document.getElementById('ia-main-section');
-    const apiKeyInput = document.getElementById('api-key-input');
-    const saveApiKeyBtn = document.getElementById('save-api-key-btn');
-    const changeApiKeyBtn = document.getElementById('change-api-key-btn');
-
-    function showToast(message, isError = false) {
-        const toastContainer = document.getElementById('toast-container');
-        if (!toastContainer) return;
-        const toast = document.createElement('div');
-        toast.className = `p-4 rounded-lg shadow-lg text-white ${isError ? 'bg-red-500' : 'bg-green-500'} transition-all duration-500 ease-out transform translate-x-full opacity-0`;
-        toast.textContent = message;
-        toastContainer.appendChild(toast);
-        setTimeout(() => {
-            toast.classList.remove('translate-x-full', 'opacity-0');
-        }, 100);
-        setTimeout(() => {
-            toast.classList.add('translate-x-full', 'opacity-0');
-            setTimeout(() => toast.remove(), 500);
-        }, 4000);
-    }
-
-    function checkApiKey() {
-        const savedKey = localStorage.getItem('clipdropApiKey');
-        if (savedKey) {
-            setupSection.classList.add('hidden');
-            mainSection.classList.remove('hidden');
-        } else {
-            setupSection.classList.remove('hidden');
-            mainSection.classList.add('hidden');
-        }
-    }
-
-    saveApiKeyBtn.addEventListener('click', () => {
-        const key = apiKeyInput.value.trim();
-        if (key) {
-            localStorage.setItem('clipdropApiKey', key);
-            apiKeyInput.value = "";
-            checkApiKey();
-        } else {
-            showToast("Por favor, insira uma chave de API válida.", true);
-        }
-    });
-    
-    changeApiKeyBtn.addEventListener('click', () => {
-        if (confirm("Você tem certeza que deseja remover a chave atual e inserir uma nova?")) {
-            localStorage.removeItem('clipdropApiKey');
-            checkApiKey();
-        }
-    });
-
-    function handleFile(file) {
-        if (!file.type.startsWith('image/')) {
-            showToast('Por favor, selecione um arquivo de imagem.', true);
-            return;
-        }
-        originalImageFile = file;
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            previewBefore.src = e.target.result;
-            previewBefore.classList.remove('hidden');
-            placeholderBeforeIcon.classList.add('hidden');
-            controlsSection.classList.remove('hidden');
-            resetBtn.classList.remove('hidden');
-        };
-        reader.readAsDataURL(file);
-    }
-    
-    function resetTool() {
-        originalImageFile = null;
-        previewBefore.src = "";
-        previewAfter.src = "";
-        previewBefore.classList.add('hidden');
-        placeholderBeforeIcon.classList.remove('hidden');
-        previewAfter.classList.add('hidden');
-        placeholderAfterIcon.classList.remove('hidden');
-        loadingSpinner.classList.add('hidden');
-        downloadBtn.classList.add('hidden');
-        controlsSection.classList.add('hidden');
-        resetBtn.classList.add('hidden');
-        imageUpload.value = '';
-        document.getElementById('dish-description').value = '';
-    }
-
-    dropZone.addEventListener('click', () => imageUpload.click());
-    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-indigo-500', 'bg-gray-50'); });
-    dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('border-indigo-500', 'bg-gray-50'); });
-    dropZone.addEventListener('drop', (e) => { e.preventDefault(); dropZone.classList.remove('border-indigo-500', 'bg-gray-50'); if (e.dataTransfer.files.length) { handleFile(e.dataTransfer.files[0]); } });
-    imageUpload.addEventListener('change', (e) => { if (e.target.files.length) { handleFile(e.target.files[0]); } });
-    resetBtn.addEventListener('click', resetTool);
-
-// Dentro da sua função setupIaToolsTab, substitua o bloco do enhanceBtn por este:
-
-// Substitua o seu bloco if (enhanceBtn) por esta versão final e correta
-
-if (enhanceBtn) {
-    enhanceBtn.addEventListener('click', async () => {
-        const apiKey = localStorage.getItem('clipdropApiKey');
-        if (!apiKey) {
-            showToast("Chave de API não encontrada. Por favor, configure-a.", true);
-            return;
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.remove('hidden');
         }
 
-        if (!originalImageFile) {
-            showToast("Por favor, envie uma foto original primeiro.", true);
-            return;
+        function clearError() {
+            errorMessage.classList.add('hidden');
         }
 
-        placeholderAfterIcon.classList.add('hidden');
-        previewAfter.classList.add('hidden');
-        downloadBtn.classList.add('hidden');
-        loadingSpinner.classList.remove('hidden');
-        enhanceBtn.disabled = true;
-        enhanceBtn.innerHTML = '<div class="spinner mx-auto" style="width: 24px; height: 24px; border-left-color: white;"></div>';
+        function handleFile(file) {
+            if (!file.type.startsWith('image/')) {
+                showError('Por favor, selecione um arquivo de imagem válido.');
+                return;
+            }
+            clearError();
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                originalImageBase64 = e.target.result.split(',')[1];
+                previewBefore.src = e.target.result;
+                previewBefore.classList.remove('hidden');
+                controlsSection.classList.remove('hidden');
+                resetBtn.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
 
-        const formData = new FormData();
-        formData.append('image_file', originalImageFile, originalImageFile.name);
-
-        try {
-            // VERIFIQUE SE A SUA LINHA ESTÁ IGUAL A ESTA:
-            const response = await fetch('https://api.clipdrop.co/product-photography/v1', {
-                method: 'POST',
-                headers: {
-                    'x-api-key': apiKey,
-                },
-                body: formData,
-            });
-
-            if (response.ok) {
-                const imageBlob = await response.blob();
-                const imageUrl = URL.createObjectURL(imageBlob);
-                previewAfter.src = imageUrl;
-                downloadBtn.href = imageUrl;
-                
-                const dishDescription = document.getElementById('dish-description').value || 'foto_profissional';
-                downloadBtn.download = `cardapiogram_${dishDescription.toLowerCase().replace(/\s/g, '_')}.png`;
-
-                previewAfter.classList.remove('hidden');
-                downloadBtn.classList.remove('hidden');
-            } else {
-                const errorData = await response.json();
-                console.error("Erro detalhado da API ClipDrop:", errorData);
-                console.error("Status da Resposta:", response.status);
-                throw new Error(errorData.error || `Erro ${response.status}`);
+        enhanceBtn.addEventListener('click', async () => {
+            if (apiKey === "SUA_CHAVE_API_VAI_AQUI" || apiKey === "") {
+                showError("ERRO: Por favor, insira sua chave de API do Google AI Studio no código do arquivo HTML para que a aplicação funcione.");
+                return;
             }
 
-        } catch (error) {
-            showToast(`Erro da API ClipDrop: ${error.message}`, true);
-            console.error(error);
-            placeholderAfterIcon.classList.remove('hidden');
-        } finally {
-            loadingSpinner.classList.add('hidden');
-            enhanceBtn.disabled = false;
-            enhanceBtn.innerHTML = '<i class="fas fa-magic-wand-sparkles mr-3"></i>Melhorar Foto';
-        }
-    });
-}
+            if (!originalImageBase64) return;
+            clearError();
 
-}
+            const dishDescription = document.getElementById('dish-description').value;
+            if (!dishDescription) {
+                showError("Por favor, descreva o prato para melhores resultados.");
+                return;
+            }
+            
+            placeholderIcon.classList.add('hidden');
+            previewAfter.classList.add('hidden');
+            downloadBtn.classList.add('hidden');
+            loadingSpinner.classList.remove('hidden');
+            enhanceBtn.disabled = true;
+            enhanceBtn.innerHTML = '<div class="spinner mx-auto" style="width: 24px; height: 24px; border-left-color: white;"></div>';
+
+            const photoStyle = document.getElementById('photo-style').value;
+            const backgroundStyle = document.getElementById('background-style').value;
+
+            const prompt = `Use a imagem de entrada como referência principal para o prato. Recrie uma fotografia profissional de comida de um(a) ${dishDescription}, em um estilo de ${photoStyle}. O fundo deve ser ${backgroundStyle}. A imagem deve ser hiper-realista, apetitosa, com iluminação de estúdio e cores vibrantes. Foco total no prato.`;
+
+            try {
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image-preview:generateContent?key=${apiKey}`;
+
+                const payload = {
+                    contents: [{
+                        parts: [
+                            { text: prompt },
+                            {
+                                inlineData: {
+                                    mimeType: "image/jpeg",
+                                    data: originalImageBase64
+                                }
+                            }
+                        ]
+                    }],
+                    generationConfig: {
+                        responseModalities: ['IMAGE']
+                    },
+                };
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erro na API: ${response.statusText}`);
+                }
+
+                const result = await response.json();
                 
-        </script>
-    </body>
-    </html>
+                if (!result.candidates || result.candidates.length === 0) {
+                    let apiErrorMessage = "A API não retornou uma imagem válida.";
+                    if (result.promptFeedback && result.promptFeedback.blockReason) {
+                        apiErrorMessage = `A imagem foi bloqueada por segurança (${result.promptFeedback.blockReason}). Tente uma descrição ou imagem diferente.`;
+                    }
+                    console.error("API Response without candidates:", result);
+                    throw new Error(apiErrorMessage);
+                }
+                
+                const imagePart = result.candidates[0].content.parts.find(p => p.inlineData && p.inlineData.mimeType.startsWith('image/'));
+                const base64Data = imagePart?.inlineData?.data;
+
+                if (base64Data) {
+                    const imageUrl = `data:image/png;base64,${base64Data}`;
+                    previewAfter.src = imageUrl;
+                    downloadBtn.href = imageUrl;
+                    downloadBtn.download = `cardapiogram_foto_${dishDescription.toLowerCase().replace(/\s/g, '_')}.png`;
+
+                    loadingSpinner.classList.add('hidden');
+                    previewAfter.classList.remove('hidden');
+                    downloadBtn.classList.remove('hidden');
+                } else {
+                    console.error("No image data found in candidate:", result.candidates[0]);
+                    throw new Error("A API não retornou uma imagem válida, mesmo com uma resposta positiva.");
+                }
+
+            } catch (error) {
+                console.error("Erro ao gerar imagem:", error);
+                showError(error.message || "Ocorreu um erro ao gerar a imagem. Por favor, tente novamente.");
+                placeholderIcon.classList.remove('hidden');
+                loadingSpinner.classList.add('hidden');
+            } finally {
+                enhanceBtn.disabled = false;
+                enhanceBtn.innerHTML = '<i class="fas fa-magic-wand-sparkles mr-3"></i>Gerar Versão Profissional';
+            }
+        });
+    </script>
+</body>
+</html>
+
+
